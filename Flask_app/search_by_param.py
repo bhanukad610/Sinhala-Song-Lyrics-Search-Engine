@@ -31,5 +31,3 @@ def search_by_param(parameter, term):
 
         except:
             print("Error")
-
-# print(search_by("Song", "දෙදෙනා"))

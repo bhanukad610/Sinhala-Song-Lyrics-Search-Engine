@@ -80,5 +80,3 @@ def multi_search(parameter, term):
 
         except:
             print("Error")
-
-# search_by_term("ලතාවේ")

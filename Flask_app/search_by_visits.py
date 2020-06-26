@@ -89,5 +89,3 @@ def search_by_visits(visits):
 
         except:
             print("Error")
-
-# search_by_term("ලතාවේ")

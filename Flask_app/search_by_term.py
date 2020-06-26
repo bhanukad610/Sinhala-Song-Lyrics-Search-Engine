@@ -76,5 +76,3 @@ def search_by_term(term):
 
         except:
             print("Error")
-
-# search_by_term("ලතාවේ")
