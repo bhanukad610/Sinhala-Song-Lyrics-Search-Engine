@@ -5,7 +5,8 @@ import json
 import unicodedata
 import re 
 
-title = u'mage hitha piree \u2013 \u0db8\u0d9c\u0dd9 \u0dc4\u0dd2\u0dad \u0db4\u0dd2\u0dbb\u0dd3'
+title1 = u'adara-gangulehi'
+title2 = u'yawwana-uyane'
 
 def isEnglish(s):
     return re.search('[a-zA-Z]', s)
@@ -22,24 +23,34 @@ def get_song_obj(title):
     soup_song = BeautifulSoup(r_song.content, 'lxml')
 
     con0 = soup_song.find('h3')
+    # print(con0.text)
     key = con0.text.split(':')
+    
 
-    title_sin = soup_song.find('h1', class_ = "entry-title")
-    title_sin = str(title_sin.text).strip()
-    title_sin = (re.sub(' +', ' ', title_sin)).strip()
-    words = title_sin.split()
-    sin_title = ""
-    check = False
-    for i in words:
-        if(check):
-            sin_title += i + " "
-        if i == "–":
-            check = True
-    sin_title = sin_title.strip()
-
+    key_fin = ""
+    if len(key) > 1:
+        key_fin = key[1]
+    else:
+        key_fin = key[0]
+    print(key_fin)
     con1 = soup_song.find('div', class_ = "su-column su-column-size-3-6")
     artist = (con1.find('span', class_="entry-categories").text).split(':')[1]
-    genre = (con1.find("span", class_= "entry-tags").text).split(':')[1]
+
+    try:
+        visits = (soup_song.find('div', class_="tptn_counter").text)
+        visits_num = ""
+        for i in visits:
+            if(i.isnumeric()):
+                visits_num += i
+        visits_num = int(visits_num)
+    except:
+        print("Error in visits")
+    
+    genre = "No"
+    try:
+        genre = (con1.find("span", class_= "entry-tags").text).split(':')[1]
+    except:
+        genre = "No"
 
     con2 = soup_song.find('div', class_ = "su-column su-column-size-2-6")
     lyrics_artist = (con2.find('span', class_="lyrics").text).split(':')[1]
@@ -53,7 +64,6 @@ def get_song_obj(title):
         line_striped = (re.sub(' +', ' ', line)).strip()
         if(isEnglish(line_striped) or ("|"  in line_striped)):
             if(len(line_striped) > 0):
-                # print(line_striped)
                 gutar += line_striped + " "
         else:
             if(len(line_striped) > 0):
@@ -62,15 +72,16 @@ def get_song_obj(title):
     song_obj = {
         "Artist" : (re.sub(' +', ' ', unicodedata.normalize('NFKD', artist).encode('ascii', 'ignore'))).strip(),
         "Lyrics" : (re.sub(' +', ' ', unicodedata.normalize('NFKD', lyrics_artist).encode('ascii', 'ignore'))).strip(),
-        "Key" : (re.sub(' +', ' ', key[1].encode("utf-8"))).strip(),
-        "Genre" : (re.sub(' +', ' ', unicodedata.normalize('NFKD', genre).encode('ascii', 'ignore'))).strip(),
+        "Key" : (re.sub(' +', ' ', key_fin.encode("utf-8"))).strip(),
+        "Genre" : (re.sub(' +', ' ', genre.encode("utf-8"))).strip(),
         "Music" : (re.sub(' +', ' ', unicodedata.normalize('NFKD', music).encode('ascii', 'ignore'))).strip(),
         "Song" : (re.sub(' +', ' ', lyrics.encode("utf-8"))).strip(),
         "Guitar" : (re.sub(' +', ' ', unicodedata.normalize('NFKD', gutar).encode('ascii', 'ignore'))).strip(),
-        "Title" : (re.sub(' +', ' ', sin_title).strip())
+        "Title" : (re.sub(' +', ' ', title_en).strip()),
+        "Visits" : visits_num
     }
 
     return song_obj
 
-# get_song_obj(title)
-print(get_song_obj(title))
+# get_song_obj(title2)
+# print(get_song_obj(title))

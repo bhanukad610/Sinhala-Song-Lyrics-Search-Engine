@@ -41,13 +41,15 @@ artists = [
 songs = []
 count = 0
 
+
+
 for artist in artists:
     artist_name = artist.lower()
     artist_name = artist_name.replace(" ", "-")
     print(artist_name)
 
 
-    for page_number in range(12):
+    for page_number in range(13):
         URL_for_page = "https://sinhalasongbook.com/page/"+str(page_number)+"?lyrics="+artist_name
         r_artist_page = requests.get(URL_for_page)
         soup_artist_page = BeautifulSoup(r_artist_page.content, 'lxml')
@@ -65,8 +67,8 @@ for artist in artists:
                 except:
                     print(song_name, "Error!")
 
-csv_columns = ['Artist','Lyrics','Key', 'Genre', 'Music', 'Song', 'Title', 'Guitar']
-csv_file = "songs_corpus_with_english_1.csv"
+csv_columns = ['Artist','Lyrics','Key', 'Genre', 'Music', 'Song', 'Title', 'Guitar', 'Visits']
+csv_file = "songs_corpus_with_english_final.csv"
 try:
     with open(csv_file, 'w') as csvfile:
         writer = csv.DictWriter(csvfile, fieldnames=csv_columns)

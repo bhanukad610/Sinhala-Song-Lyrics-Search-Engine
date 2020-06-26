@@ -1,0 +1,2 @@
+chmod 400 ec2IRProject.pem
+ssh -i "ec2IRProject.pem" ubuntu@ec2-54-172-47-106.compute-1.amazonaws.com
