@@ -7,6 +7,7 @@ from search_by_term import search_by_term
 from multi_search import multi_search
 from search_by_visits import search_by_visits
 from facetedSearch import facetedSearch
+from advancedSearch import advancedSearch
 
 app = Flask(__name__)
 
@@ -41,3 +42,8 @@ def multi_searchby_param():
 def faceted_search():                                                                                                                              
     data = request.get_json()
     return facetedSearch(data)
+
+@app.route('/advancedSearch', methods=['GET', 'POST', 'DELETE', 'PUT'])
+def advanced_search():                                                                                                                              
+    data = request.get_json()
+    return advancedSearch(data)
