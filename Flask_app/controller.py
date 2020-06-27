@@ -37,7 +37,6 @@ def multi_searchby_param():
     term = request.args.get('term')
     return multi_search(parameter, term)
 
-
 @app.route('/facetedSearch', methods=['GET', 'POST', 'DELETE', 'PUT'])
 def faceted_search():                                                                                                                              
     data = request.get_json()

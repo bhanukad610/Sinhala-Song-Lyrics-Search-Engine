@@ -1,17 +1,9 @@
 import json
 import requests
 
-def advancedSearch(data):
-        mustobj = []
+URL = "http://localhost:9200/songs/_search"
 
-        for filterobj in data['filter']:
-            matchObj = {
-                "term" : {filterobj['keyword']+".keyword" : {"value" : filterobj['value']}}
-            }
-            mustobj.append(matchObj)
-
-        print(filter)
-        URL = "http://localhost:9200/songs/_search"
+def perform_query(mustobj, rangeObj):
         query = {
                 "size" : 10,
                 "query" : {
@@ -24,7 +16,7 @@ def advancedSearch(data):
                         },
                         {
                         "range" : {
-                            "Visits" : data['range']
+                            "Visits" : rangeObj
                         }
                         }
                     ]
@@ -94,3 +86,16 @@ def advancedSearch(data):
 
         except:
             print("Error")
+
+def advancedSearch(data):
+        mustobj = []
+
+        for filterobj in data['filter']:
+            matchObj = {"term" : {filterobj['keyword']+".keyword" : {"value" : filterobj['value']}}}
+            mustobj.append(matchObj)
+
+        range = data['range']
+        return perform_query(mustobj, range)
+        
+        
+        
