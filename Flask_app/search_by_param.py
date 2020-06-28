@@ -31,5 +31,3 @@ def search_by_param(parameter, term):
 
         except:
             print("Error")
-
-# search_by_param("වික්ටර් රත්නායක", "Artist")
