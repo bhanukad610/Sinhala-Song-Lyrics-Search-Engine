@@ -64,68 +64,87 @@ def generate_query(term, size, sort):
                     },
                     "aggs" : aggs
                     }
+    
     return query
 
-def generate_query_with_keywords(mustObj, size, sort):
+def generate_query_with_keywords(mustObj, term, size, sort):
+    
 
     if(sort):
-        query =   {
+        query = {
             "sort": [{"Visits": {"order": "desc"}}],
             "size": size,
+            "aggs": aggs,
             "query": {
                 "bool": {
                 "must": [
                     {
-                    "bool": {
-                        "must": mustObj
-                    }}]
+                    "query_string": {
+                        "query": term
+                    }
+                    }
+                ],
+                "filter":mustObj
                 }
-            },
-            "aggs": aggs
             }
+        }
     else:
-        query =   {
-            "sort": [{"Visits": {"order": "desc"}}],
+        query = {
             "size": size,
+            "aggs": aggs,
             "query": {
                 "bool": {
                 "must": [
                     {
-                    "bool": {
-                        "must": mustObj
-                    }}]
+                    "query_string": {
+                        "query": term
+                    }
+                    }
+                ],
+                "filter":mustObj
                 }
-            },
-            "aggs": aggs
             }
+        }
+
     return query
 
 
 def detect_keywords(term):
     mustobj = []
     words = term.split()
-
+    text , artist, lyrics, music = "", "", "", ""
     for i in range (len(words)):
         word = words[i]
         if word  in artist_key_words:
             artist = words[i-2] + " "+ words[i-1]
-            matchObjArtist = {"term" : {"Artist.keyword" : {"value" : artist}}}
+            matchObjArtist = {"match" : {"Artist" : artist}}
             mustobj.append(matchObjArtist)
 
-        if word  in lyrics_key_words:
+        elif word  in lyrics_key_words:
             lyrics = words[i-2] + " "+ words[i-1]
-            matchObjLyrics = {"term" : {"Lyrics.keyword" : {"value" : lyrics}}}
+            matchObjLyrics = {"match" : {"Lyrics" : lyrics}}
             mustobj.append(matchObjLyrics)
         
-        if word  in music_key_words:
+        elif word  in music_key_words:
             music = words[i-2] + " "+ words[i-1]
-            matchObjMusic = {"term" : {"Music.keyword" : {"value" : music}}}
+            matchObjMusic = {"match" : {"Music" : music}}
             mustobj.append(matchObjMusic)
 
-        if word  in genre_key_words:
-            matchObjGenre = {"term" : {"Genre.keyword" : {"value" : word}}}
+        elif word  in genre_key_words:
+            matchObjGenre = {"match" : {"Genre" : word}}
             mustobj.append(matchObjGenre)
+        
+        else:
+            text += word + " "
 
+    text_cleaned = ""
+    text_splited = text.split()
+    for word in text_splited:
+      if not(word in artist or  word in lyrics or  word in music):
+        text_cleaned += word + " "
+    text_cleaned = text_cleaned.strip()
+    matchObjSong = {"match" : {"Song" : text_cleaned}}
+    mustobj.append(matchObjSong)
     return mustobj
 
 URL = "http://localhost:9200/songs/_search"
@@ -169,51 +188,49 @@ def perfom_query(query, sort):
 def get_number(term):
     words = term.split()
     number = 0
-    text = ""
     for i in words:
         if hasNumbers(i):
             number = int(i)
-        else:
-            text += i + " "
-    return number, text
+    return number
 
 def search_by_term(term):
     words = term.split()
 
-    if len(words) >= 5:
-        mustObj = detect_keywords(term)
+    mustObj = detect_keywords(term)
+
+    if len(words) >= 4:
         if(len(mustObj) > 0):
             if(hasNumbers(term)):
                 #search by keywords + sort N results + facets
-                size, text = get_number(term)
+                size = get_number(term)
                 sort = True
-                query = generate_query_with_keywords(mustObj, size, sort)
+                query = generate_query_with_keywords(mustObj, term, size, sort)
             else:
                 #earch by keywords  + facets 
                 size = 20
                 sort = False
-                query = generate_query_with_keywords(mustObj, 20, sort)
+                query = generate_query_with_keywords(mustObj,term, 20, sort)
         else:
             if(hasNumbers(term)):
                 #query search + facets + sort N
-                size, text = get_number(term)
+                size = get_number(term)
                 sort = True
-                query = generate_query(text, size, sort)
+                query = generate_query(term, size, sort)
             else:
                  #query search + facets
-                 size, text = get_number(term)
+                 size = get_number(term)
                  sort = False
-                 query = generate_query(text, 20, sort)
+                 query = generate_query(term, 20, sort)
 
     else:
         if(hasNumbers(term)):
-            size, text = get_number(term)
+            size = get_number(term)
             sort = True
-            query = generate_query(text, size, sort)
+            query = generate_query(term, size, sort)
         else:
             sort = False
-            size, text = get_number(term)
-            query = generate_query(text, 20, sort)
+            size = get_number(term)
+            query = generate_query(term, 20, sort)
     
 
     try:
