@@ -15,7 +15,7 @@ The corpus contains sinhala songs with following parameters.The corpus is create
 
 ### Quick start
 #### Pre requesists : 
-- Python and flask and Elasticsearch needed in your PC.
+- Python, flask, requests library and Elasticsearch needed in your PC.
 
 #### Steps : 
 1. Clone the repository.
