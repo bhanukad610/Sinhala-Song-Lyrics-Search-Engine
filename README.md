@@ -13,6 +13,22 @@ The corpus contains sinhala songs with following parameters.The corpus is create
 8. 'title-en' - title in english
 9. 'Visits' - number of visits to the song
 
+### Quick start
+#### Pre requesists : 
+- Python and flask and Elasticsearch needed in your PC.
+
+#### Steps : 
+1. Clone the repository.
+2. Run an Elasticsearch instance on port 9200.
+3. Go to the folder Corpus. Run the python script send.py to put the corpus to the elasticsearch.
+4. Then go to the Flask_app folder and open a terminal and run the follwing commands. 
+  ```
+source venv/bin/activate
+export FLASK_APP=controller
+flask run
+```
+5. Now you can create requests to below mentioned endpoints.
+
 #### Endpoints and techniques used in designing indexing and querying
 
 | Endpoint  | Request Type | Functionality | Example |
@@ -25,5 +41,16 @@ The corpus contains sinhala songs with following parameters.The corpus is create
 | /advancedSeach  | POST  | Search with given set of fields including range of visit  |  {"filter" : [       {"keyword" : "Artist",      "value": "ක්ලැරන්ස් විජේවර්ධන" },     {"keyword" : "Genre",       "value": "පැරණි පොප්ස්" },     {"keyword" : "Music",       "value": "ක්ලැරන්ස් විජේවර්ධන" },     {"keyword" : "Lyrics",       "value": "ක්ලැරන්ස් විජේවර්ධන" }  ],  "range": {"gte" : 100,            "lte": 1000}} |
 
 #### Ruled based classification in /searchBy
-Search text should be in Sinhala.
-![alt text](https://github.com//[reponame]/blob/[branch]/image.jpg?raw=true)
+Search text should be in Sinhala
+
+![alt text](https://github.com/bhanukad610/Sinhala-Song-Lyrics-Search-Engine/blob/master/Flask_app/IR%20-%20Rules.png?raw=true)
+
+##### Keywrods used for diffrent fileds:
+- artist_key_words = ['ගෙ', 'ගැයූ','ගයන', 'කියන', 'කියූ', 'ගායනා']
+- lyrics_key_words = ['ලියූ', 'ලියන', 'ලිව්ව', 'රචනා', 'රචිත', 'ලීව']
+- music_key_words = ['සංගීත']
+- genre_key_words = ['පොප්', 'ක්ලැසික්', 'දේවානුභාවයෙන්','පොප්ස්','ඩුවට්ස්','ක්ලැසික්','යුගල','ඕල්ඩීස්','කැලිප්සෝ','ළමා']
+
+#### Usage of advanced features
+- Used facet feature selected set of queries. In Elasticseach, aggregations are used for that purpose. Top 5 facets in the selected field are taken.
+- Range queries were used to filter by the total number of visits.
