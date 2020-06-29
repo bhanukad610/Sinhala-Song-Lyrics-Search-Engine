@@ -1,39 +1,39 @@
 # Sinhala-Song-Lyrics-Search-Engine
-Song lyrics search engine for Sinhalese language using Elasticsearch. 
+Song lyrics search engine for Sinhalese language using Elasticsearch and python. 
 
-The corpus contains sinhala songs with following parameters.The corpus is created by using the https://sinhalasongbook.com/ website.
+The corpus contains Sinhala songs with the following parameters. The corpus is created by using the https://sinhalasongbook.com/ website.
 
 1. 'Artist' - the artist
 2. 'Lyrics'- the lyrics artist
 3. 'Key'- guitar key
-4. 'Genre' - genre of the song
+4. 'Genre' - the genre of the song
 5. 'Music' - the musician of the song
 6. 'Song'- lyrics content
-7. 'Title' - title of the song
-8. 'title-en' - title in english
-9. 'Visits' - number of visits to the song
+7. 'Title' - the title of the song
+8. 'title-en' - title in English
+9. 'Visits' - the number of visits to the song
 
 ### Directory 
-├── Corpus : original data, the processed data and the python script to put to Elasticsearch  
-├── Flask_app : Backend of the search engine  
-├── lyrics : Python scripts used to prepare the corpus
+├── Corpus: original data, the processed data and the python script to put to Elasticsearch  
+├── Flask_app: Backend of the search engine  
+├── lyrics: Python scripts used to prepare the corpus
 
 
 ### Quick start
 #### Pre requesists : 
-- Python, flask, requests library and Elasticsearch needed in your PC.
+- Python, Flask, requests library and Elasticsearch needed in your PC.
 
 #### Steps : 
 1. Clone the repository.
 2. Run an Elasticsearch instance on port 9200.
-3. Go to the folder Corpus. Run the python script send.py to put the corpus to the elasticsearch.
-4. Then go to the Flask_app folder and open a terminal and run the follwing commands. 
+3. Go to the folder Corpus. Run the python script send.py to put the corpus to the Elasticsearch.
+4. Then go to the Flask_app folder and open a terminal and run the following commands. 
   ```
 source venv/bin/activate
 export FLASK_APP=controller
 flask run
 ```
-5. Now you can create requests to below mentioned endpoints.
+5. Now you can create requests to below-mentioned endpoints.
 
 #### Endpoints and techniques used in designing indexing and querying
 
