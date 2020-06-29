@@ -13,6 +13,12 @@ The corpus contains sinhala songs with following parameters.The corpus is create
 8. 'title-en' - title in english
 9. 'Visits' - number of visits to the song
 
+### Directory 
+├── Corpus : original data, the processed data and the python script to put to Elasticsearch  
+├── Flask_app : Backend of the search engine  
+├── lyrics : Python scripts used to prepare the corpus
+
+
 ### Quick start
 #### Pre requesists : 
 - Python, flask, requests library and Elasticsearch needed in your PC.
@@ -50,7 +56,3 @@ Search text should be in Sinhala
 - lyrics_key_words = ['ලියූ', 'ලියන', 'ලිව්ව', 'රචනා', 'රචිත', 'ලීව']
 - music_key_words = ['සංගීත']
 - genre_key_words = ['පොප්', 'ක්ලැසික්', 'දේවානුභාවයෙන්','පොප්ස්','ඩුවට්ස්','ක්ලැසික්','යුගල','ඕල්ඩීස්','කැලිප්සෝ','ළමා']
-
-#### Usage of advanced features
-- Used facet feature selected set of queries. In Elasticseach, aggregations are used for that purpose. Top 5 facets in the selected field are taken.
-- Range queries were used to filter by the total number of visits.
