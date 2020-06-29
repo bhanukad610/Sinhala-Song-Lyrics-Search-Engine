@@ -1,9 +1,7 @@
 import json
 import requests
 
-URL = "http://localhost:9200/songs/_search"
-
-def perform_query(mustobj, rangeObj):
+def perform_query(mustobj, rangeObj, host):
         query = {
                 "size" : 10,
                 "query" : {
@@ -58,6 +56,7 @@ def perform_query(mustobj, rangeObj):
 
 
         try:
+            URL = "http://" + str(host) + ":9200/songs/_search"
             headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
             response = (requests.post(URL, data = json.dumps(query), headers = headers)).text
 
@@ -88,7 +87,7 @@ def perform_query(mustobj, rangeObj):
         except:
             print("Error")
 
-def advancedSearch(data):
+def advancedSearch(data, host):
         mustobj = []
 
         for filterobj in data['filter']:
@@ -96,7 +95,7 @@ def advancedSearch(data):
             mustobj.append(matchObj)
 
         range = data['range']
-        return perform_query(mustobj, range)
+        return perform_query(mustobj, range, host)
         
         
         

@@ -1,7 +1,7 @@
 import json
 import requests
 
-def facetedSearch(data):
+def facetedSearch(data, host):
 
         filter = []
 
@@ -11,7 +11,7 @@ def facetedSearch(data):
             }
 
             filter.append(matchObj)
-        URL = "http://localhost:9200/songs/_search"
+        URL = "http://" + str(host) + ":9200/songs/_search"
         query = {
                 "query": {
                     "bool": {

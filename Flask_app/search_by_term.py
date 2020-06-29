@@ -151,13 +151,12 @@ def detect_keywords(term):
         
     return mustobj
 
-URL = "http://localhost:9200/songs/_search"
-
 def hasNumbers(inputString):
     return any(char.isdigit() for char in inputString)
 
 
-def perfom_query(query):
+def perfom_query(query, host):
+            URL = "http://" + str(host) + ":9200/songs/_search"
             headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
             response = (requests.post(URL, data = json.dumps(query), headers = headers)).text
             res = json.loads(response)
@@ -197,7 +196,7 @@ def get_number(term):
             number = int(i)
     return number
 
-def search_by_term(term):
+def search_by_term(term, host):
     words = term.split()
 
     mustObj = detect_keywords(term)
@@ -241,6 +240,6 @@ def search_by_term(term):
 
     try:
         print(query)
-        return perfom_query(query)
+        return perfom_query(query, host)
     except:
         print("Error")

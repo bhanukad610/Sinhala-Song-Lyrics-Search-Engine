@@ -1,8 +1,8 @@
 import json
 import requests
 
-def multi_search(parameter, term):
-        URL = "http://localhost:9200/songs/_search"
+def multi_search(parameter, term, host):
+        URL = "http://" + str(host) + ":9200/songs/_search"
         query = {
                 "query":{
                     "multi_match" : {

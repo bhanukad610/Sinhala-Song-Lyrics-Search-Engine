@@ -1,7 +1,7 @@
 import json
 import requests
 
-def search_by_visits(visits):
+def search_by_visits(visits, host):
         gte = None
         lte = None
 
@@ -11,7 +11,7 @@ def search_by_visits(visits):
             gte = int(visits[0])
             lte = int(visits[1])
  
-        URL = "http://localhost:9200/songs/_search"
+        URL = "http://" + str(host) + ":9200/songs/_search"
         query = {
                 "size" : 10,
                 "query": {

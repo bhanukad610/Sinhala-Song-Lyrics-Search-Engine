@@ -1,8 +1,8 @@
 import json
 import requests
 
-def search_by_param(parameter, term):
-        URL = "http://localhost:9200/songs/_search"
+def search_by_param(parameter, term, host):
+        URL = "http://" + str(host) + ":9200/songs/_search"
         query = {
                 "query": {
                     "match": {
