@@ -11,10 +11,6 @@ from advancedSearch import advancedSearch
 
 app = Flask(__name__)
 
-@app.route('/')
-def hello_world():
-    return search_all()
-
 @app.route('/searchBy')
 def searchby_term():
     term = request.args.get('term')
