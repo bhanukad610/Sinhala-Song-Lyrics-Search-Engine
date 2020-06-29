@@ -27,6 +27,7 @@ def search_by_param(parameter, term):
                 "hits" : len(songs),
                 "results" : songs
             }
+            print(query)
             return response_body
 
         except:

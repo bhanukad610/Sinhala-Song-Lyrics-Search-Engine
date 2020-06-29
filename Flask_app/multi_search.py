@@ -75,7 +75,7 @@ def multi_search(parameter, term):
                     "Music filter" : facets['Music filter']['buckets'],
                 }      
             }
-
+            print(query)
             return response_body
 
         except:

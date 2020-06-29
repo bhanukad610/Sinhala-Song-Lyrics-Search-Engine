@@ -143,8 +143,12 @@ def detect_keywords(term):
       if not(word in artist or  word in lyrics or  word in music):
         text_cleaned += word + " "
     text_cleaned = text_cleaned.strip()
+    text_cleaned = (''.join([i for i in text_cleaned if not i.isdigit()])).strip()
     matchObjSong = {"match" : {"Song" : text_cleaned}}
-    mustobj.append(matchObjSong)
+
+    if len(mustobj) > 0:
+        mustobj.append(matchObjSong)
+        
     return mustobj
 
 URL = "http://localhost:9200/songs/_search"
@@ -153,7 +157,7 @@ def hasNumbers(inputString):
     return any(char.isdigit() for char in inputString)
 
 
-def perfom_query(query, sort):
+def perfom_query(query):
             headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
             response = (requests.post(URL, data = json.dumps(query), headers = headers)).text
             res = json.loads(response)
@@ -166,12 +170,12 @@ def perfom_query(query, sort):
             
             facets = res['aggregations']
             
-            if(sort): 
-                response_body = {
-                    "results" : songs
-                }
-            else:
-                response_body = {
+            # if(sort): 
+            #     response_body = {
+            #         "results" : songs
+            #     }
+            # else:
+            response_body = {
                     "results" : songs,
                     "facets" : {
                         "Title filter" : facets['Title filter']['buckets'],
@@ -203,6 +207,7 @@ def search_by_term(term):
             if(hasNumbers(term)):
                 #search by keywords + sort N results + facets
                 size = get_number(term)
+                term  = (''.join([i for i in term if not i.isdigit()])).strip()
                 sort = True
                 query = generate_query_with_keywords(mustObj, term, size, sort)
             else:
@@ -214,6 +219,7 @@ def search_by_term(term):
             if(hasNumbers(term)):
                 #query search + facets + sort N
                 size = get_number(term)
+                term  = (''.join([i for i in term if not i.isdigit()])).strip()
                 sort = True
                 query = generate_query(term, size, sort)
             else:
@@ -234,6 +240,7 @@ def search_by_term(term):
     
 
     try:
-        return perfom_query(query, sort)
+        print(query)
+        return perfom_query(query)
     except:
         print("Error")

@@ -80,7 +80,8 @@ def perform_query(mustobj, rangeObj):
                     "Lyrics filter" : facets['Lyrics filter']['buckets'],
                     "Music filter" : facets['Music filter']['buckets'],
                 }      
-            }
+            }   
+            print(query)
 
             return response_body
 

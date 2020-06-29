@@ -11,7 +11,6 @@ def facetedSearch(data):
             }
 
             filter.append(matchObj)
-        print(filter)
         URL = "http://localhost:9200/songs/_search"
         query = {
                 "query": {
@@ -88,7 +87,7 @@ def facetedSearch(data):
                     "Music filter" : facets['Music filter']['buckets'],
                 }      
             }
-
+            print(query)
             return response_body
 
         except:

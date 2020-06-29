@@ -84,7 +84,7 @@ def search_by_visits(visits):
                     "Music filter" : facets['Music filter']['buckets'],
                 }      
             }
-
+            print(query)
             return response_body
 
         except:
